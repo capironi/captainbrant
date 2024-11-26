@@ -23,4 +23,28 @@ jobs:
       # Step 3: Install Python dependencies
       - name: Install Python packages
         run: |
-          python -
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt  # Ensure requirements.txt is in the repo
+
+      # Step 4: Print environment variables for debugging
+      - name: Print environment variables (for debugging)
+        run: |
+          echo "CONSUMER_KEY=${{ secrets.CONSUMER_KEY }}"
+          echo "CONSUMER_SECRET=${{ secrets.CONSUMER_SECRET }}"
+          echo "ACCESS_TOKEN=${{ secrets.ACCESS_TOKEN }}"
+          echo "ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}"
+
+      # Step 5: Execute Python script (main.py)
+      - name: Execute Python script (main.py)
+        env:
+          CONSUMER_KEY: ${{ secrets.CONSUMER_KEY }}
+          CONSUMER_SECRET: ${{ secrets.CONSUMER_SECRET }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+        run: python main.py
+
+      # Step 6: Verify cron is working correctly (for debugging purposes)
+      - name: Verify Cron Trigger Time
+        run: |
+          echo "Current UTC Time: $(date -u)"
+
